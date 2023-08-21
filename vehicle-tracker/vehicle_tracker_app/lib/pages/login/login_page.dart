@@ -54,7 +54,7 @@ class LoginPage extends StatelessWidget {
 
                 // * Login Button
                 Padding(
-                  padding: theme.buttonPadding,
+                  padding: theme.verticalMargin * 2,
                   child: DigitElevatedButton(
                     child: Text(AppTranslation.LOGIN.tr),
                     onPressed: () => loginController.login(context),
