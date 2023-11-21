@@ -43,7 +43,9 @@ class HomePage extends StatelessWidget {
                 child: DigitIconButton(
                   icon: Icons.help_outline_rounded,
                   iconText: AppTranslation.HELP.tr,
-                  onPressed: () {},
+                  onPressed: () {
+                    // toaster(context, AppTranslation.TRIP_ENDED_SUCCESFULLY_MESSAGE.tr, isError: false);
+                  },
                 ),
               ),
             ),

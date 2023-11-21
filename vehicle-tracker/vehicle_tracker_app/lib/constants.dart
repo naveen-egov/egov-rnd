@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final String apiUrl = dotenv.env["API_URL"] ?? "";
@@ -23,3 +24,6 @@ const String NAME = "name";
 const String MOBILE_NUMBER = "mobileNumber";
 
 const List<String> hiveBoxes = ["en_IN", "or_IN", "mdms", "tracker", "user"];
+
+const ENG_LOCALE = Locale("en", "IN");
+const ORI_LOCALE = Locale("or", "IN");

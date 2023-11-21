@@ -1,6 +1,7 @@
 import 'package:digit_components/digit_components.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vehicle_tracker_app/constants.dart';
 import 'package:vehicle_tracker_app/data/hive_service.dart';
 import 'package:vehicle_tracker_app/util/i18n_translations.dart';
 
@@ -49,21 +50,9 @@ class CustomDrawer extends StatelessWidget {
             icon: Icons.home,
           ),
           DigitIconTile(
-            title: Get.locale.toString() == "en_IN" ? AppTranslation.ENGLISH.tr : AppTranslation.ODIA.tr,
+            title: Get.locale == ENG_LOCALE ? AppTranslation.ENGLISH.tr : AppTranslation.ODIA.tr,
             onPressed: () {},
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DigitElevatedButton(
-                  child: Text(AppTranslation.ODIA.tr),
-                  onPressed: () => Get.updateLocale(const Locale('or', 'IN')),
-                ),
-                CustomOutLineButton(
-                  label: AppTranslation.ENGLISH.tr,
-                  onPressed: () => Get.updateLocale(const Locale('en', 'IN')),
-                ),
-              ],
-            ),
+            content: const LanguageButtonsWidget(),
             icon: Icons.language,
           ),
           DigitIconTile(
@@ -73,6 +62,45 @@ class CustomDrawer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class LanguageButtonsWidget extends StatelessWidget {
+  const LanguageButtonsWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (Get.locale == ENG_LOCALE) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CustomOutLineButton(
+            label: AppTranslation.ODIA.tr,
+            onPressed: () => Get.updateLocale(ORI_LOCALE),
+          ),
+          DigitElevatedButton(
+            child: Text(AppTranslation.ENGLISH.tr),
+            onPressed: () => Get.updateLocale(ENG_LOCALE),
+          ),
+        ],
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        DigitElevatedButton(
+          child: Text(AppTranslation.ODIA.tr),
+          onPressed: () => Get.updateLocale(ORI_LOCALE),
+        ),
+        CustomOutLineButton(
+          label: AppTranslation.ENGLISH.tr,
+          onPressed: () => Get.updateLocale(ENG_LOCALE),
+        ),
+      ],
     );
   }
 }
