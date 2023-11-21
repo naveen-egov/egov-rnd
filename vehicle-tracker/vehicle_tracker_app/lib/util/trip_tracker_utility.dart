@@ -15,11 +15,7 @@ class TripTrackerUtility {
   // ? If the location permissions are not granted, it will request for the permissions
   // ? If the location services are disabled, it will request to enable the services
   // ? IF the permissions are granted, it will return true othrwise false
-  Future<bool> handleLocationPermission(BuildContext? context) async {
-    if (context == null) {
-      log("handleLocationPermission called with null context");
-    }
-
+  Future<bool> handleLocationPermission(BuildContext context) async {
     bool serviceEnabled;
     LocationPermission permission;
     log("handleLocationPermission called");

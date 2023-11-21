@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:digit_components/digit_components.dart';
-import 'package:digit_components/widgets/atoms/digit_toaster.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -25,12 +24,14 @@ class TripControllers extends GetxController {
   RxBool isRunning = false.obs; // This variable is to check if the tracking is running or not
   RxBool isLoading = false.obs; // This variable is to check if startTracking is loading or not
 
-  HomeHTTPRepository homeHTTPRepository = HomeHTTPRepository();
+  late HomeHTTPRepository homeHTTPRepository;
   HomeHiveRepository homeHiveRepository = HomeHiveRepository();
   TripTrackerUtility tripTrackerUtility = TripTrackerUtility();
   InfoController infoController = Get.find<InfoController>();
 
-  TripControllers(this.context);
+  TripControllers(this.context) {
+    homeHTTPRepository = HomeHTTPRepository(context: context);
+  }
 
   // * This function starts the tracking peroiodic event
   Future<void> startTracking(Rx<HomeTripModel> data) async {
@@ -39,13 +40,13 @@ class TripControllers extends GetxController {
     log("Start TRIP API");
     final status = await homeHTTPRepository.updateTrip(data.value, TripStates.ONGOING);
     if (!status) {
-      toaster(null, AppTranslation.TRIP_NOT_STARTED_MESSAGE.tr, isError: true);
+      toaster(context, AppTranslation.TRIP_NOT_STARTED_MESSAGE.tr, isError: true);
       data.value.status = TripStates.NOTSTARTED;
       update([data.value.id]);
       return;
     }
 
-    toaster(null, AppTranslation.TRIP_STARTED_SUCCESFULLY_MESSAGE.tr, isError: false);
+    toaster(context, AppTranslation.TRIP_STARTED_SUCCESFULLY_MESSAGE.tr, isError: false);
 
     data.value.status = TripStates.ONGOING;
     update([data.value.id]);
@@ -76,7 +77,7 @@ class TripControllers extends GetxController {
   // ? If the location permissions are not granted, the function will stop and return early
   // ? If the location permissions are granted, the function will get the current location and use it accordingly
   Future<void> trackerLogic(String alert, HomeTripModel trip) async {
-    bool permissions = await tripTrackerUtility.handleLocationPermission(Get.context);
+    bool permissions = await tripTrackerUtility.handleLocationPermission(context);
     if (!permissions) {
       isRunning.value = false;
       log('Location permissions not granted');
@@ -126,7 +127,7 @@ class TripControllers extends GetxController {
       if (status) {
         log("Position sent successfully");
         await homeHiveRepository.deleteTripData();
-        toaster(null, AppTranslation.POSITION_SENT_MESSAGE.tr);
+        toaster(context, AppTranslation.POSITION_SENT_MESSAGE.tr);
         return status;
       } else {
         // If the position sending fails, save the data to hive
@@ -138,7 +139,7 @@ class TripControllers extends GetxController {
       // If not connected to internet, save the data to hive
       log("No internet connection, saving to hive");
       await homeHiveRepository.storeTripData(tripHiveModel);
-      toaster(null, AppTranslation.POSITION_HIVE_STORE_MESSAGE.tr);
+      toaster(context, AppTranslation.POSITION_HIVE_STORE_MESSAGE.tr);
       return false;
     }
   }
@@ -147,14 +148,7 @@ class TripControllers extends GetxController {
   // ? If not completed, it will show a toast message
   bool spamChecker(BuildContext context) {
     if (isLoading.isTrue) {
-      DigitToast.show(
-        context,
-        options: DigitToastOptions(
-          AppTranslation.START_LOADING_MESSAGE.tr,
-          true,
-          DigitTheme.instance.mobileTheme,
-        ),
-      );
+      toaster(context,  AppTranslation.START_LOADING_MESSAGE.tr, isError: true);
       return true;
     }
 
@@ -194,11 +188,11 @@ class TripControllers extends GetxController {
     if (!status) {
       data.value.status = TripStates.ONGOING;
       update([data.value.id]);
-      toaster(null, AppTranslation.TRIP_NOT_END_MESSAGE.tr, isError: true);
+      toaster(context, AppTranslation.TRIP_NOT_END_MESSAGE.tr, isError: true);
       return;
     }
 
-    toaster(null, AppTranslation.TRIP_ENDED_SUCCESFULLY_MESSAGE.tr, isError: false);
+    toaster(context, AppTranslation.TRIP_ENDED_SUCCESFULLY_MESSAGE.tr, isError: false);
 
     log("Deleting trip data from hive");
     await homeHiveRepository.deleteTripData();

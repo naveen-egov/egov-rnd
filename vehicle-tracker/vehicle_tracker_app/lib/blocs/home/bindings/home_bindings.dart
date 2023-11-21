@@ -7,7 +7,7 @@ import '../controllers/info_controllers.dart';
 class HomeBindings extends Bindings {
   @override
   void dependencies() {
-    Get.put(InfoController(), permanent: true);
+    Get.put(InfoController(Get.context!), permanent: true);
   }
 }
 // * enums

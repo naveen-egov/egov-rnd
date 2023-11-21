@@ -24,7 +24,6 @@ class PolygonMap extends StatelessWidget {
     }
 
     final mapController = Get.put(MapControllers(userId, tenantId));
-    mapController.userID = userId;
     mapController.fetchData();
 
     return GetX<MapControllers>(

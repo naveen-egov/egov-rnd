@@ -1,6 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:vehicle_tracker_app/constants.dart';
 import 'package:vehicle_tracker_app/data/http_service.dart';
 import 'package:vehicle_tracker_app/models/home_trip/home_trip_model/home_trip_model.dart';
@@ -11,6 +14,12 @@ import 'package:vehicle_tracker_app/util/toaster.dart';
 import '../../../data/secure_storage_service.dart';
 
 class HomeHTTPRepository {
+  final BuildContext context;
+  HomeHTTPRepository({
+    required this.context,
+  });
+  
+
   // ? Uses the userId to get the list of trips.
   Future<List<Rx<HomeTripModel>>> getHomeTripData(String tenantId, String operatorId) async {
     List<Rx<HomeTripModel>> homeTripModel = [];

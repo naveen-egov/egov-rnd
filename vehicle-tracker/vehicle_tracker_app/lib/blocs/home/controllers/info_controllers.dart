@@ -1,7 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:vehicle_tracker_app/blocs/home/bindings/home_bindings.dart';
 import 'package:vehicle_tracker_app/blocs/home/repository/home_http_repository.dart';
 import 'package:vehicle_tracker_app/constants.dart';
@@ -10,11 +12,16 @@ import 'package:vehicle_tracker_app/models/home_trip/home_trip_model/home_trip_m
 import 'package:vehicle_tracker_app/util/logout.dart';
 
 class InfoController extends GetxController {
+  final BuildContext context;
+
   RxBool isCompleted = false.obs; // To check if the completed button is pressed or not.
   RxBool isLoading = false.obs; // To check if the data is loading or not.
   RxBool isTextControllerEmpty = true.obs; // To check if the search text is empty or not.
+  InfoController(this.context) {
+    homeHTTPRepository = HomeHTTPRepository(context: context);
+  }
 
-  HomeHTTPRepository homeHTTPRepository = HomeHTTPRepository();
+  late HomeHTTPRepository homeHTTPRepository;
   final TextEditingController searchController = TextEditingController();
   final normalTripList = RxList<Rx<HomeTripModel>>([]);
   final filteredNormalTripList = RxList<Rx<HomeTripModel>>([]);
