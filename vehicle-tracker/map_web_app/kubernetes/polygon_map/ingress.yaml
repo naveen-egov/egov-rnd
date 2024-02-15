@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: route-map-app-ingress
+  name: polygon-map-app-ingress
   namespace: apps
   annotations:
     kubernetes.io/ingress.class: "nginx"
@@ -20,11 +20,11 @@ spec:
     - host: unified-dev.digit.org
       http:
         paths:
-          - path: /route_map
+          - path: /polygon_map
             pathType: Prefix
             backend:
               service:
-                name: route-map-app-service
+                name: polygon-map-app-service
                 port:
                   number: 80
 

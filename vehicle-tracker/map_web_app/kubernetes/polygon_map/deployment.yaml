@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: polygon-map-app
+  namespace: apps
+  labels:
+    app: polygon-map-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: polygon-map-app
+  template:
+    metadata:
+      labels:
+        app: polygon-map-app
+    spec:
+      containers:
+      - name: polygon-map-app-container
+        image: egovio/polygon_map:latest
+        ports:
+        - containerPort: 80
+
